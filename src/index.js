@@ -3,17 +3,15 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 import {BrowserRouter as Router, Route , Switch, Redirect, NavLink} from 'react-router-dom'
-// import Homepage from '../src/containers/Homepage/Homepage'
-// import ErrorPage from '../src/containers/404Page/404'
-// import DetailNews from '../src/containers/detailNews/index'
-// import ProtectPage from '../src/containers/ProtectedPage/index'
+// import Homepage from './containers/Homepage/index'
+// import ErrorPage from './containers/ErrorPage/index'
+// import DetailNews from './containers/detailItem/index'
+// import ProtectPage from './containers/ProtectedPage/index'
 
-const Homepage = lazy(()=>import('./containers/Homepage'));
-const ErrorPage = lazy(()=>import('../src/containers/ErrorPage/index'));
-const DetailItem = lazy(()=>import('../src/containers/detailItem/index'));
-const ProtectPage = lazy(()=>import('../src/containers/ProtectedPage/index'));
-
-//<Link to={{ pathname: `/product/${item.id}`, data: item, search: `${item.sale ? `?deal=${item.sale}` : ''}` }}>{item.name}</Link>
+const Homepage = lazy(()=>import('./containers/Homepage/index'));
+const ErrorPage = lazy(()=>import('./containers/ErrorPage/index'));
+const DetailItem = lazy(()=>import('./containers/detailItem/index'));
+const ProtectPage = lazy(()=>import('./containers/ProtectedPage/index'));
 
 const PrivateRoute = () =>{
   const auth = false;
@@ -27,7 +25,7 @@ const PrivateRoute = () =>{
   );
 }
 
-class index extends Component{
+class lifeCycle extends Component{
   constructor(props) {
     super(props);
     console.log(0);

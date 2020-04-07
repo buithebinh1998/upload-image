@@ -25,7 +25,8 @@ export default class Item extends Component{
                 <ul>
                     {listItems}
                 </ul>
-                <Link to='/error'><p>Error page is here</p></Link>
+                <Link to='/error'><p>Error page is here!</p></Link>
+                <Link to='/profile'><p>Profile page is here! (auth = false)</p></Link>
             </div>
         )
     }
