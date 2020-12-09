@@ -1,0 +1,15 @@
+.img-wrapper {
+  position: relative;
+}
+
+.thumbnail-img {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+}
+
+.remove-icon {
+  position: absolute;
+  top: 0;
+  right: 2px;
+}
