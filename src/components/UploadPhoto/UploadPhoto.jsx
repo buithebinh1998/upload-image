@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Upload, Modal, Button } from "antd";
+import { Upload, Modal, Button, Progress } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { storage } from "../../firebase/firebase";
 import "./UploadPhoto.scss";
 import onConfirmHandler from "../Modal/ConfirmModal";
-import {errorNotification} from "../Gallery/Gallery";
+import { successNotification, errorNotification } from "../Notifications/Notifications.utils";
+import './../Notifications/Notifications.scss';
 
 const generateUniqueID = () => {
     return "_" + Math.random().toString(36).substr(2, 9);
@@ -25,12 +26,18 @@ const clearAllContent = 'Remember to upload your important photos.';
 const uploadErrorMessage = 'Upload failed!';
 const uploadErrorDescription = 'Cannot upload images, please try again!';
 
+const uploadSuccessMessage = "Upload all images completed!";
+const uploadSuccessDescription = "Please check in the Gallery!";
+
 const UploadPhoto = () => {
     const [imageList, setImageList] = useState([]);
     const [totalImg, setTotalImg] = useState(0);
     const [previewVisible, setPreviewVisible] = useState(false);
     const [previewImage, setPreviewImage] = useState("");
     const [previewTitle, setPreviewTitle] = useState("");
+    const [percentUpload, setPercentUpload] = useState(0);
+    const [uploaded, setUploaded] = useState(true);
+    const [submitting, setSubmitting] = useState(false);
 
     useEffect(() => {
         setTotalImg(imageList.length);
@@ -41,25 +48,32 @@ const UploadPhoto = () => {
         setImageList([]);
     };
 
-
-
     const handleUpload = () => {
+        setPercentUpload(0);
+        setUploaded(false);
+        setSubmitting(true);
+        let counter = 0;
         imageList.forEach((image) => {
             const originImage = image.originFileObj;
             originImage.id = generateUniqueID();
             const uploadTask = storage.ref(`images/${originImage.id}_${originImage.name}`).put(originImage);
             uploadTask.on(
                 "state_changed",
-                (snapshot) => {
-                    const progress = Math.round(
-                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                    );
-                },
+                () => {},
                 (error) => {
-                    errorNotification(uploadErrorMessage, uploadErrorDescription);
+                    errorNotification('error-notification', uploadErrorMessage, uploadErrorDescription);
+                    setUploaded(true);
+                    setSubmitting(false);
                 },
                 () => {
                     storage.ref("images").child(originImage.name);
+                    counter++;
+                    setPercentUpload(Math.round(counter/imageList.length*100));
+                    if(counter === imageList.length) {
+                        setUploaded(true);
+                        successNotification('success-notification', uploadSuccessMessage, uploadSuccessDescription);
+                        setSubmitting(false);
+                    }
                 }
             );
         });
@@ -92,7 +106,7 @@ const UploadPhoto = () => {
     const uploadButton = (
         <div>
             <PlusOutlined />
-            <div className='mt-2'>Upload</div>
+            <div className='mt-2'>Add images</div>
         </div>
     );
 
@@ -102,7 +116,13 @@ const UploadPhoto = () => {
                 <Button type="primary" danger className="mr-auto" onClick={() => onConfirmHandler(clearAllConfirm, clearAllContent, onClearAll, () => {})}>
                     Clear All
                 </Button>
-                <div className="ml-auto font-weight-bold">{`${totalImg} selected`}</div>
+                <Button type="primary" onClick={handleUpload} disabled={submitting} className="ml-auto">
+                    Upload
+                </Button>
+            </div>
+            <div className="mt-3 font-weight-bold">{`${totalImg} selected`}</div>
+            <div className="d-flex justify-content-center flex-column">
+                {!uploaded && <Progress type="line" percent={percentUpload} />}
             </div>
             <Upload
                 accept="image/*"
@@ -116,6 +136,7 @@ const UploadPhoto = () => {
             >
                 {uploadButton}
             </Upload>
+
             <Modal
                 visible={previewVisible}
                 title={previewTitle}
@@ -124,13 +145,6 @@ const UploadPhoto = () => {
             >
                 <img alt="example" style={{ width: "100%" }} src={previewImage} />
             </Modal>
-
-
-            <div className="d-flex justify-content-center">
-                <Button type="primary" onClick={handleUpload}>
-                    Upload
-                </Button>
-            </div>
         </>
     );
 };

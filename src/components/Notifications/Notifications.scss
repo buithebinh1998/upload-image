@@ -1,0 +1,23 @@
+.error-notification {
+  color: red;
+
+  .ant-notification-notice-content {
+    .ant-notification-notice-with-icon {
+      .ant-notification-notice-message {
+        color: red !important;
+      }
+    }
+  }
+}
+
+.success-notification {
+  color: green;
+
+  .ant-notification-notice-content {
+    .ant-notification-notice-with-icon {
+      .ant-notification-notice-message {
+        color: green !important;
+      }
+    }
+  }
+}
