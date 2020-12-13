@@ -3,6 +3,7 @@ import { Card } from 'antd';
 import UploadPhoto from "../UploadPhoto/UploadPhoto";
 import onConfirmHandler from "../Modal/ConfirmModal";
 import Gallery from "../Gallery/Gallery";
+import { Link } from 'react-router-dom';
 
 const tabList = [
     {
@@ -39,7 +40,7 @@ const TabsCard = (props) => {
             <Card
                 className={'m-3'}
                 title="Photos Management"
-                extra={<a href="#">Back to homepage</a>}
+                extra={<Link to="/">Back to homepage</Link>}
                 tabList={tabList}
                 activeTabKey={selectedTab.key}
                 onTabChange={(key) => onTabChange(key, 'key')}

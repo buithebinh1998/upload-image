@@ -7,9 +7,10 @@ import './index.css';
 import * as serviceWorker from './serviceWorker';
 import {BrowserRouter as Router, Route , Switch, Redirect, NavLink} from 'react-router-dom'
 
-const Homepage = lazy(()=>import('./containers/Homepage/HomePage'));
+const HomePage = lazy(()=>import('./containers/HomePage/index'));
 const ErrorPage = lazy(()=>import('./containers/ErrorPage/index'));
 const ProtectPage = lazy(()=>import('./containers/ProtectedPage/index'));
+const UploadPage =  lazy(()=>import('./containers/UploadPage/UploadPage'));
 
 const PrivateRoute = () =>{
   const auth = false;
@@ -26,8 +27,9 @@ const app = (
   <Router>
     <Suspense fallback={<div>Loading...</div>}>
       <Switch>
-        <Route path='/' exact component={Homepage}/>
+        <Route path='/' exact component={HomePage}/>
         <Route path='/error' component={ErrorPage}/>
+        <Route path='/upload' component={UploadPage}/>
         <PrivateRoute path='/profile'/>
         <Redirect from='/404' to ='/error'/>
       </Switch>
