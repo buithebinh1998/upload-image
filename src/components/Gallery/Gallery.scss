@@ -1,0 +1,24 @@
+.item-img-wrapper {
+  .ant-image {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+.item-img {
+  height: 100%;
+  object-fit: contain;
+}
+
+.delete-icon {
+  color: red;
+  &:hover {
+    cursor: pointer;
+  }
+  &.disabled-delete {
+    &:hover {
+      cursor: auto;
+    }
+    opacity: 0.5;
+  }
+}
