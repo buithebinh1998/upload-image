@@ -28,7 +28,7 @@ const TabsCard = (props) => {
     const [selectedTab, setSelectedTab] = useState(props.activeTabKey);
 
     const onTabChange = (key, type) => {
-        if (key !== 'upload_photos') {
+        if (key !== 'upload_photos' && selectedTab.key !== 'gallery' ) {
             onConfirmHandler(tabChangeConfirm, tabChangeContent, () => setSelectedTab({ [type]: key }), () => {} );
             return;
         }
