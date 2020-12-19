@@ -76,7 +76,7 @@ const UploadPhoto = () => {
   };
 
   useEffect(() => {
-    if(initialLoad){
+    if (initialLoad) {
       const timeoutGetFolder = setTimeout(() => {
         getFolderList();
       }, 1000);
@@ -92,9 +92,17 @@ const UploadPhoto = () => {
     imageList.forEach((image) => {
       const originImage = image.originFileObj;
       originImage.id = generateUniqueID();
+      const imgDate = new Date();
+      const metaData = {
+        customMetadata: {
+          imgName: originImage.name,
+          uploadedDate: imgDate.toLocaleString("en-gb"),
+        },
+      };
+      console.log(metaData);
       const uploadTask = storage
-        .ref(`${selectedFolder}/${originImage.id}_${originImage.name}`)
-        .put(originImage);
+        .ref(`${selectedFolder}/${originImage.id}`)
+        .put(originImage, metaData);
       uploadTask.on(
         "state_changed",
         () => {},
@@ -128,7 +136,6 @@ const UploadPhoto = () => {
           }
         }
       );
-
     });
   };
 

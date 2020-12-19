@@ -1,3 +1,13 @@
+.name-group {
+  max-width: 400px;
+}
+
+.item-img-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .item-img-wrapper {
   .ant-image {
     width: 50px;
@@ -21,4 +31,8 @@
     }
     opacity: 0.5;
   }
+}
+
+.ant-breadcrumb {
+  color: black;
 }

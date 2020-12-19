@@ -7,7 +7,7 @@ import './SelectFolder.scss';
 const { Option } = Select;
 
 const SelectFolder = (props) => {
-  const { folderList, setFolderList, selectedFolder, setSelectedFolder, disabled, initialLoad } = props;
+  const { folderList, setFolderList, selectedFolder, setSelectedFolder, disabled } = props;
 
   const [name, setName] = useState('');
 
