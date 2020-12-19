@@ -3,12 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="a760c605-e626-4345-9468-f891abd992d1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Gallery/Gallery.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Gallery/Gallery.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Gallery/Gallery.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Gallery/Gallery.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/SelectFolder/SelectFolder.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SelectFolder/SelectFolder.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/UploadPhoto/UploadPhoto.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/UploadPhoto/UploadPhoto.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/HomePage/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/HomePage/index.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,7 +51,7 @@
       <updated>1607737629717</updated>
       <workItem from="1607737631891" duration="12273000" />
       <workItem from="1608340419928" duration="1034000" />
-      <workItem from="1608341755519" duration="5171000" />
+      <workItem from="1608341755519" duration="6210000" />
     </task>
     <servers />
   </component>

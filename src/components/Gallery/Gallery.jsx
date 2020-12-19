@@ -54,6 +54,7 @@ const Gallery = () => {
       }, 1000);
       return () => clearTimeout(timeoutGetFolder);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [completeDelete]);
 
   const getImageFromStorage = (selectedFolder) => {
@@ -154,6 +155,7 @@ const Gallery = () => {
     getImageFromStorage(selectedFolder);
     getFolderList(true);
     setInitialLoaded(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -163,12 +165,14 @@ const Gallery = () => {
       }, 1000);
       return () => clearTimeout(timeoutGetStorage);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSubmitting]);
 
   useEffect(() => {
     if (!initialLoad) {
       getImageFromStorage(selectedFolder);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedFolder]);
 
   const columns = [
@@ -179,19 +183,26 @@ const Gallery = () => {
       render: (text, record) => (
         <div className="d-flex align-items-center name-group">
           <div className="item-img-wrapper">
-            <Image className="item-img" src={record.url} alt={""} />
+            <Image className="item-img" src={record.url} alt={"error"} />
           </div>
           <div className="ml-2 item-img-text" title={text}>
             {text}
           </div>
         </div>
       ),
+      sorter: {
+        compare: (a, b) => a.imgName.localeCompare(b.imgName),
+      },
     },
     {
       title: "Uploaded Date",
       key: "uploadedDate",
       dataIndex: "uploadedDate",
       render: (text) => <div>{text}</div>,
+      sorter: {
+        compare: (a, b) => a.uploadedDate.localeCompare(b.uploadedDate),
+      },
+      defaultSortOrder: "descend",
     },
     {
       title: "Action",

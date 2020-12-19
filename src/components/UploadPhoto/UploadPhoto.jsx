@@ -82,6 +82,7 @@ const UploadPhoto = () => {
       }, 1000);
       return () => clearTimeout(timeoutGetFolder);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [completeUpload]);
 
   const handleUpload = () => {
