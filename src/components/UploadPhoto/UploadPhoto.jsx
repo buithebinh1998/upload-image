@@ -43,14 +43,14 @@ const UploadPhoto = () => {
   const [uploaded, setUploaded] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [folderList, setFolderList] = useState([]);
-  const [initFolderList, setInitFolderList] = useState([]);
   const [selectedFolder, setSelectedFolder] = useState("");
   const [completeUpload, setCompleteUpload] = useState(false);
   const [initialLoad, setInitialLoaded] = useState(false);
+  const [fetchFolderList, setFetchFolderList] = useState(false);
 
-  const getFolderList = () => {
+  const getFolderList = async () => {
     const folderRef = database.ref("folderName").orderByValue();
-    folderRef.on("value", (snapshot) => {
+    await folderRef.on("value", (snapshot) => {
       const newFolderList = [];
       snapshot.forEach((childSnapshot) => {
         if (!newFolderList.includes(childSnapshot.val())) {
@@ -58,8 +58,8 @@ const UploadPhoto = () => {
         }
       });
       setFolderList([...newFolderList]);
-      setInitFolderList([...newFolderList]);
     });
+    setFetchFolderList(false);
   };
 
   useEffect(() => {
@@ -70,6 +70,10 @@ const UploadPhoto = () => {
     setInitialLoaded(true);
     getFolderList();
   }, []);
+
+  useEffect(() => {
+    if (fetchFolderList) getFolderList();
+  }, [fetchFolderList]);
 
   const onClearAll = () => {
     setImageList([]);
@@ -100,7 +104,6 @@ const UploadPhoto = () => {
           uploadedDate: imgDate.toLocaleString("en-gb"),
         },
       };
-      console.log(metaData);
       const uploadTask = storage
         .ref(`${selectedFolder}/${originImage.id}`)
         .put(originImage, metaData);
@@ -117,10 +120,6 @@ const UploadPhoto = () => {
           setSubmitting(false);
         },
         () => {
-          if (!initFolderList.includes(selectedFolder)) {
-            database.ref("folderName").orderByValue();
-            database.ref("folderName").push(selectedFolder);
-          }
           storage.ref(selectedFolder).child(originImage.name);
           counter++;
           setPercentUpload(Math.round((counter / imageList.length) * 100));
@@ -180,6 +179,7 @@ const UploadPhoto = () => {
           selectedFolder={selectedFolder}
           setSelectedFolder={setSelectedFolder}
           disabled={submitting}
+          setFetchFolderList={setFetchFolderList}
         />
       </div>
 

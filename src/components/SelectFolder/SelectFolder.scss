@@ -7,3 +7,22 @@
 .error-text {
   color: red;
 }
+
+.ant-select-item-option-content {
+  display: flex;
+  align-items: center;
+}
+
+.edit-folder:hover {
+  color: blue;
+}
+
+.delete-folder:hover {
+  color: red;
+}
+
+.folder-name-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
