@@ -11,7 +11,7 @@ import {
 import "./../Notifications/Notifications.scss";
 import SelectFolder from "../SelectFolder/SelectFolder";
 
-const generateUniqueID = () => {
+export const generateUniqueID = () => {
   return "_" + Math.random().toString(36).substr(2, 9);
 };
 
@@ -43,7 +43,7 @@ const UploadPhoto = () => {
   const [uploaded, setUploaded] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [folderList, setFolderList] = useState([]);
-  const [selectedFolder, setSelectedFolder] = useState("");
+  const [selectedFolder, setSelectedFolder] = useState({});
   const [completeUpload, setCompleteUpload] = useState(false);
   const [initialLoad, setInitialLoaded] = useState(false);
   const [fetchFolderList, setFetchFolderList] = useState(false);
@@ -53,14 +53,17 @@ const UploadPhoto = () => {
     await folderRef.on("value", (snapshot) => {
       const newFolderList = [];
       snapshot.forEach((childSnapshot) => {
-        if (!newFolderList.includes(childSnapshot.val())) {
-          newFolderList.push(childSnapshot.val());
-        }
+        newFolderList.push({
+          id: childSnapshot.key,
+          name: childSnapshot.val().name,
+        });
       });
       setFolderList([...newFolderList]);
     });
     setFetchFolderList(false);
   };
+
+  console.log(folderList);
 
   useEffect(() => {
     setTotalImg(imageList.length);

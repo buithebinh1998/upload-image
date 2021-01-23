@@ -33,14 +33,15 @@ const Gallery = () => {
   const [selectedFolder, setSelectedFolder] = useState("");
   const [completeDelete, setCompleteDelete] = useState(false);
 
-  const getFolderList = (isInitialLoad) => {
+  const getFolderList = async (isInitialLoad) => {
     const folderRef = database.ref("folderName").orderByValue();
-    folderRef.on("value", (snapshot) => {
+    await folderRef.on("value", (snapshot) => {
       const newFolderList = [];
       snapshot.forEach((childSnapshot) => {
-        if (!newFolderList.includes(childSnapshot.val())) {
-          newFolderList.push(childSnapshot.val());
-        }
+        newFolderList.push({
+          id: childSnapshot.key,
+          name: childSnapshot.val().name,
+        });
       });
       setFolderList([...newFolderList]);
       isInitialLoad && setSelectedFolder(newFolderList[0]);
@@ -59,11 +60,14 @@ const Gallery = () => {
 
   const getImageFromStorage = (selectedFolder) => {
     const imgListGet = [];
-    const storageRef = storage.ref(selectedFolder);
+    const storageRef = storage.ref(selectedFolder.id);
     setLoaded(false);
     storageRef
       .listAll()
       .then((result) => {
+        if (result.items.length <= 0) {
+          setListImg([]);
+        }
         result.items.forEach(async (imageRef) => {
           let newUrl = "";
           let newName = "";
@@ -117,18 +121,18 @@ const Gallery = () => {
       });
   };
 
-  const onDelete = (name) => {
+  const onDelete = (record) => {
     onConfirmHandler(
       deleteImgConfirm,
       deleteImgContent,
-      () => handleDeleteApi(name, selectedFolder),
+      () => handleDeleteApi(record.name, selectedFolder),
       () => {}
     );
   };
 
   const handleDeleteApi = (name, selectedFolder) => {
     setSubmitting(true);
-    const folderPath = selectedFolder;
+    const folderPath = selectedFolder.id;
     const deleteRef = storage.ref().child(`${folderPath}/${name}`);
     deleteRef
       .delete()
@@ -211,7 +215,7 @@ const Gallery = () => {
         <Space
           size="middle"
           className={classes("delete-icon", isSubmitting && "disabled-delete")}
-          onClick={isSubmitting ? () => {} : () => onDelete(record.name)}
+          onClick={isSubmitting ? () => {} : () => onDelete(record)}
         >
           <DeleteOutlined title={"Delete Image"} />
         </Space>
@@ -219,11 +223,11 @@ const Gallery = () => {
     },
   ];
 
-  const folderListMapping = folderList.map((folder, index) => {
+  const folderListMapping = folderList.map((folder) => {
     return (
-      <Menu.Item key={index} onClick={() => setSelectedFolder(folder)}>
+      <Menu.Item key={folder.id} onClick={() => setSelectedFolder(folder)}>
         <div>
-          <FolderOpenOutlined className="align-middle" /> {folder}
+          <FolderOpenOutlined className="align-middle" /> {folder.name}
         </div>
       </Menu.Item>
     );
@@ -235,7 +239,7 @@ const Gallery = () => {
     <Breadcrumb separator=">" className="mb-3">
       <Breadcrumb.Item>Gallery</Breadcrumb.Item>
       <Breadcrumb.Item overlay={menuFolder} className="font-weight-bold">
-        <FolderOpenOutlined className="align-middle" /> {selectedFolder}
+        <FolderOpenOutlined className="align-middle" /> {selectedFolder.name}
       </Breadcrumb.Item>
     </Breadcrumb>
   );

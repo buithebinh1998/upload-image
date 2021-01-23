@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Modal, Input } from "antd";
 import { database } from "../../firebase/firebase";
 import { errorNotification } from "../Notifications/Notifications.utils";
@@ -7,39 +7,30 @@ const EditModal = (props) => {
   const {
     isEditModalVisible,
     setIsEditModalVisible,
-    editName,
-    setEditName,
+    editFolder,
+    setEditFolder,
     setFetchFolderList,
   } = props;
 
   const editErrorMessage = "Edit folder name failed!";
   const editErrorDescription = "Cannot edit folder name, please try again!";
-  const [initialName, setInitialName] = useState(editName);
-
-  useEffect(() => {
-    if (isEditModalVisible) setInitialName(editName);
-  }, [isEditModalVisible]);
 
   const handleOk = async () => {
-    // let updates = {};
-    // let key = "";
-    // const folderRef = database.ref("folderName").orderByValue();
-    // await folderRef.on("value", (snapshot) => {
-    //   snapshot.forEach((childSnapshot) => {
-    //     if (childSnapshot.val() === initialName) {
-    //       key = childSnapshot.key;
-    //     }
-    //   });
-    // });
-    // updates[key] = editName;
-    // await database.ref("folderName/").update(updates);
-    errorNotification(
-      "error-notification",
-      editErrorMessage,
-      editErrorDescription
-    );
-    setIsEditModalVisible(false);
-    setFetchFolderList(true);
+    try {
+      database.ref("folderName").orderByValue();
+      await database.ref("folderName/" + editFolder.id).set({
+        name: editFolder.name,
+        id: editFolder.id,
+      });
+      setIsEditModalVisible(false);
+      setFetchFolderList(true);
+    } catch (e) {
+      errorNotification(
+        "error-notification",
+        editErrorMessage,
+        editErrorDescription
+      );
+    }
   };
 
   const handleCancel = () => {
@@ -47,7 +38,7 @@ const EditModal = (props) => {
   };
 
   const onChangeEditName = (e) => {
-    setEditName(e.target.value);
+    setEditFolder({ ...editFolder, name: e.target.value });
   };
 
   return (
@@ -59,7 +50,7 @@ const EditModal = (props) => {
         onCancel={handleCancel}
       >
         <Input
-          value={editName}
+          value={editFolder.name}
           placeholder="Enter new folder name"
           onChange={onChangeEditName}
         />

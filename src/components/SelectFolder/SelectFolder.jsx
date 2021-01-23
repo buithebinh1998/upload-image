@@ -11,8 +11,14 @@ import "./SelectFolder.scss";
 import { database } from "../../firebase/firebase";
 import EditModal from "./EditModal";
 import onConfirmHandler from "../Modal/ConfirmModal";
+import { generateUniqueID } from "../UploadPhoto/UploadPhoto";
+import { errorNotification } from "../Notifications/Notifications.utils";
 
 const { Option } = Select;
+
+const deleteErrorMessage = "Server error!";
+const deleteErrorContent =
+  "There is something wrong when deleting the folder. Please try again!";
 
 const SelectFolder = (props) => {
   const {
@@ -26,7 +32,7 @@ const SelectFolder = (props) => {
 
   const [name, setName] = useState("");
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
-  const [editName, setEditName] = useState("");
+  const [editFolder, setEditFolder] = useState({});
   const deleteFolderConfirm = "Do you wish to delete this folder?";
   const deleteFolderContent = "The deleted folder can not be reverted.";
 
@@ -37,33 +43,40 @@ const SelectFolder = (props) => {
   const addItem = () => {
     if (!name || name === "") return;
     if (!folderList.includes(name)) {
+      const id = generateUniqueID();
       database.ref("folderName").orderByValue();
-      database.ref("folderName").push(name);
-      setFolderList([...folderList, name]);
+      database.ref("folderName/" + id).set({
+        name,
+        id,
+      });
+      setFolderList([...folderList, { id, name }]);
     }
     setName("");
   };
 
-  const editItem = (name) => {
-    setEditName(name);
+  const editItem = (item) => {
+    setEditFolder(item);
     setIsEditModalVisible(true);
   };
 
-  const deleteItem = (name) => {
+  const deleteItem = (item) => {
     onConfirmHandler(
       deleteFolderConfirm,
       deleteFolderContent,
-      async () => {
-        let key = "";
-        const folderRef = database.ref("folderName").orderByValue();
-        await folderRef.on("value", (snapshot) => {
-          snapshot.forEach((childSnapshot) => {
-            if (childSnapshot.val() === name) {
-              key = childSnapshot.key;
-            }
+      () => {
+        const folderRef = database.ref("folderName/" + item.id);
+        folderRef
+          .remove()
+          .then(() => {
+            console.log("Remove succeeded.");
+          })
+          .catch((e) => {
+            errorNotification(
+              "error-notification",
+              deleteErrorMessage,
+              deleteErrorContent
+            );
           });
-        });
-        await database.ref("folderName/").remove(key);
       },
       () => {}
     );
@@ -77,6 +90,7 @@ const SelectFolder = (props) => {
         onChange={(value) => {
           setSelectedFolder(value);
         }}
+        value={selectedFolder.name}
         placeholder="Folder Name"
         dropdownRender={(menu) => (
           <div>
@@ -99,10 +113,10 @@ const SelectFolder = (props) => {
         )}
       >
         {folderList.map((item) => (
-          <Option key={item}>
+          <Option key={item.id}>
             <FolderOpenOutlined className="mr-1" />
-            <span className="folder-name-text" title={item}>
-              {item}
+            <span className="folder-name-text" title={item.name}>
+              {item.name}
             </span>
             <span className="ml-auto d-flex">
               <EditOutlined
@@ -123,10 +137,10 @@ const SelectFolder = (props) => {
         <div className="error-text ml-3">Please choose a folder first</div>
       )}
       <EditModal
-        editName={editName}
+        editFolder={editFolder}
         isEditModalVisible={isEditModalVisible}
         setIsEditModalVisible={setIsEditModalVisible}
-        setEditName={setEditName}
+        setEditFolder={setEditFolder}
         setFetchFolderList={setFetchFolderList}
       />
     </>
