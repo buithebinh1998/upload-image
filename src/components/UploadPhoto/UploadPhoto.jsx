@@ -63,8 +63,6 @@ const UploadPhoto = () => {
     setFetchFolderList(false);
   };
 
-  console.log(folderList);
-
   useEffect(() => {
     setTotalImg(imageList.length);
   }, [imageList.length]);

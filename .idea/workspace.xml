@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f77b1cf7-29a1-492a-a1e0-932f2bed861f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Tab/Tab.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Tab/Tab.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/UploadPage/UploadPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/UploadPage/UploadPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/UploadPhoto/UploadPhoto.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/UploadPhoto/UploadPhoto.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
