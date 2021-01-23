@@ -10,30 +10,11 @@ import {
   Route,
   Switch,
   Redirect,
-  NavLink,
 } from "react-router-dom";
 import { Space, Spin } from "antd";
 
-const HomePage = lazy(() => import("./containers/HomePage/index"));
 const ErrorPage = lazy(() => import("./containers/ErrorPage/index"));
-const ProtectPage = lazy(() => import("./containers/ProtectedPage/index"));
 const UploadPage = lazy(() => import("./containers/UploadPage/UploadPage"));
-
-const PrivateRoute = () => {
-  const auth = false;
-  return auth ? (
-    <ProtectPage />
-  ) : (
-    <div>
-      You don't have permission.
-      <p>
-        <NavLink activeStyle={{ fontWeight: "bold", color: "red" }} to="/">
-          Homepage
-        </NavLink>
-      </p>
-    </div>
-  );
-};
 
 const app = (
   <Router>
@@ -45,10 +26,9 @@ const app = (
       }
     >
       <Switch>
-        <Route path="/" exact component={HomePage} />
+        <Route path="/" exact component={UploadPage} />
         <Route path="/error" component={ErrorPage} />
         <Route path="/upload" component={UploadPage} />
-        <PrivateRoute path="/profile" />
         <Redirect from="/404" to="/error" />
       </Switch>
     </Suspense>

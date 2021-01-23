@@ -24,8 +24,8 @@ const getBase64 = (file) => {
   });
 };
 
-const clearAllConfirm = "Do you want to clear all these photos?";
-const clearAllContent = "Remember to upload your important photos.";
+const clearAllConfirm = "Do you want to clear all these images?";
+const clearAllContent = "Remember to upload your important images.";
 
 const uploadErrorMessage = "Upload failed!";
 const uploadErrorDescription = "Cannot upload images, please try again!";
